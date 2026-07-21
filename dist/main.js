@@ -25,6 +25,7 @@ const resolve_1 = require("./hyperclick/resolve");
 const provider_2 = require("./hyperclick/provider");
 const console_1 = require("./run/console");
 const provider_3 = require("./lint/provider");
+const token_1 = require("./hover/token");
 // Pulsar reads this exported schema to render the package settings UI.
 exports.config = config_1.configSchema;
 const dataset = dataset_1.Dataset.load();
@@ -100,13 +101,24 @@ function consumeDatatipService(service) {
         priority: 1,
         grammarScopes: ["source.lua"],
         datatip(editor, position) {
-            const path = symbolPathAt(editor, position);
-            if (!path)
+            const row = position.row;
+            const lineText = editor.lineTextForBufferRow(row);
+            const span = (0, token_1.loveSymbolAt)(lineText, position.column);
+            if (!span)
                 return null;
-            const markdown = (0, adapters_1.hoverMarkdownForSymbol)(dataset, path);
+            const markdown = (0, adapters_1.hoverMarkdownForSymbol)(dataset, span.path);
             if (!markdown)
                 return null;
-            return { markedStrings: [{ type: "markdown", value: markdown }], range: null };
+            // datatip needs a real Range to anchor and dismiss the tooltip; a null
+            // range renders nothing. Range comes from the host 'atom' module.
+            const { Range } = require("atom");
+            return {
+                markedStrings: [{ type: "markdown", value: markdown }],
+                range: Range.fromObject([
+                    [row, span.start],
+                    [row, span.end],
+                ]),
+            };
         },
     };
     const disposable = service.addProvider(provider);
@@ -245,21 +257,5 @@ function readConfig(atom) {
         loveBinaryPath: atom.config.get("love-pulsar.loveBinaryPath"),
         sourceDirs: atom.config.get("love-pulsar.sourceDirs"),
     };
-}
-// Resolves the dotted love.* symbol under a hover position, or null.
-function symbolPathAt(editor, position) {
-    const row = position.row;
-    const lineText = editor.lineTextForBufferRow(row);
-    const col = position.column;
-    // Expand left and right over identifier characters around the column.
-    let start = col;
-    let end = col;
-    const isIdent = (c) => /[A-Za-z0-9_.]/.test(c);
-    while (start > 0 && isIdent(lineText[start - 1]))
-        start--;
-    while (end < lineText.length && isIdent(lineText[end]))
-        end++;
-    const token = lineText.slice(start, end);
-    return token.startsWith("love") ? token : null;
 }
 //# sourceMappingURL=main.js.map

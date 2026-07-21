@@ -22,6 +22,7 @@ import { resolveClick } from "./hyperclick/resolve";
 import { performResolution, type NavigationHost } from "./hyperclick/provider";
 import { parseErrorLocations } from "./run/console";
 import { lintSource } from "./lint/provider";
+import { loveSymbolAt } from "./hover/token";
 
 // Pulsar reads this exported schema to render the package settings UI.
 export const config = configSchema;
@@ -112,11 +113,22 @@ export function consumeDatatipService(service: AtomLike): Disposable {
     priority: 1,
     grammarScopes: ["source.lua"],
     datatip(editor: AtomLike, position: AtomLike): unknown {
-      const path = symbolPathAt(editor, position);
-      if (!path) return null;
-      const markdown = hoverMarkdownForSymbol(dataset, path);
+      const row = position.row as number;
+      const lineText = editor.lineTextForBufferRow(row) as string;
+      const span = loveSymbolAt(lineText, position.column as number);
+      if (!span) return null;
+      const markdown = hoverMarkdownForSymbol(dataset, span.path);
       if (!markdown) return null;
-      return { markedStrings: [{ type: "markdown", value: markdown }], range: null };
+      // datatip needs a real Range to anchor and dismiss the tooltip; a null
+      // range renders nothing. Range comes from the host 'atom' module.
+      const { Range } = require("atom") as { Range: AtomLike };
+      return {
+        markedStrings: [{ type: "markdown", value: markdown }],
+        range: Range.fromObject([
+          [row, span.start],
+          [row, span.end],
+        ]),
+      };
     },
   };
   const disposable: Disposable = service.addProvider(provider);
@@ -267,19 +279,4 @@ function readConfig(atom: AtomLike): RawConfig {
     loveBinaryPath: atom.config.get("love-pulsar.loveBinaryPath"),
     sourceDirs: atom.config.get("love-pulsar.sourceDirs"),
   };
-}
-
-// Resolves the dotted love.* symbol under a hover position, or null.
-function symbolPathAt(editor: AtomLike, position: AtomLike): string | null {
-  const row = position.row as number;
-  const lineText = editor.lineTextForBufferRow(row) as string;
-  const col = position.column as number;
-  // Expand left and right over identifier characters around the column.
-  let start = col;
-  let end = col;
-  const isIdent = (c: string) => /[A-Za-z0-9_.]/.test(c);
-  while (start > 0 && isIdent(lineText[start - 1] as string)) start--;
-  while (end < lineText.length && isIdent(lineText[end] as string)) end++;
-  const token = lineText.slice(start, end);
-  return token.startsWith("love") ? token : null;
 }
