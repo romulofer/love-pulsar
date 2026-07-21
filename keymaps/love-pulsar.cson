@@ -1,0 +1,4 @@
+# Default keybindings. Users can override these in their own keymap.
+'atom-text-editor':
+  'f5': 'love-pulsar:run'
+  'shift-f5': 'love-pulsar:stop'

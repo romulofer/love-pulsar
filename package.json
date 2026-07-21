@@ -10,7 +10,8 @@
     "autocomplete",
     "hyperclick"
   ],
-  "repository": "https://github.com/romulo2/love-pulsar",
+  "repository": "https://github.com/romulofer/love2d-pulsar",
+  "author": "Rômulo Fernandes Evangelista",
   "license": "MIT",
   "engines": {
     "atom": ">=1.100.0 <2.0.0",

@@ -1,0 +1,21 @@
+# Menu and context-menu entries for love-pulsar commands.
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      {
+        'label': 'love-pulsar'
+        'submenu': [
+          { 'label': 'Run', 'command': 'love-pulsar:run' }
+          { 'label': 'Stop', 'command': 'love-pulsar:stop' }
+        ]
+      }
+    ]
+  }
+]
+
+'context-menu':
+  'atom-text-editor[data-grammar="source lua"]': [
+    { 'label': 'LOVE: Run', 'command': 'love-pulsar:run' }
+    { 'label': 'LOVE: Stop', 'command': 'love-pulsar:stop' }
+  ]

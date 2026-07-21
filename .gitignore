@@ -1,4 +1,6 @@
 node_modules/
-dist/
 *.log
 .DS_Store
+
+# dist/ is intentionally committed: ppm publishes the git tag as-is and does not
+# run a build, and package.json "main" points into dist/.
