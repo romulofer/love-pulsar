@@ -36,4 +36,15 @@ describe("lintSource", () => {
     const src = "local g = love.graphics\n";
     expect(lintSource(ds, src)).toEqual([]);
   });
+
+  it("does not flag real API across modules (regression: full dataset)", () => {
+    const src = [
+      'love.window.setTitle("Hello World - Love2D")',
+      "love.timer.getFPS()",
+      "love.keyboard.isDown('space')",
+      "love.filesystem.read('save.txt')",
+      "love.math.random()",
+    ].join("\n");
+    expect(lintSource(ds, src)).toEqual([]);
+  });
 });

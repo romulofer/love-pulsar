@@ -68,6 +68,17 @@ dataset, autocomplete, hover, hyperclick resolution, run logic). The Pulsar host
 API is touched only in `src/main.ts`, so every feature is unit-tested without a
 live editor. Fixtures for a sample LOVE project live under `test/fixtures/`.
 
+### Regenerating the API dataset
+
+`data/love-api.json` powers autocomplete, hover, and the linter. It is generated
+from the [love2d-community/love-api](https://github.com/love2d-community/love-api)
+source:
+
+```
+git clone --depth 1 https://github.com/love2d-community/love-api /tmp/love-api
+lua scripts/build-dataset.lua /tmp/love-api > data/love-api.json
+```
+
 ## License
 
 MIT
