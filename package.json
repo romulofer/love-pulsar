@@ -1,8 +1,15 @@
 {
   "name": "love-pulsar",
-  "version": "0.1.0",
+  "version": "0.11.0",
   "description": "Coding tooling for making LOVE (love2d) games inside the Pulsar editor: autocomplete, hover docs, go-to-definition, and run.",
-  "keywords": ["love2d", "love", "lua", "gamedev", "autocomplete", "hyperclick"],
+  "keywords": [
+    "love2d",
+    "love",
+    "lua",
+    "gamedev",
+    "autocomplete",
+    "hyperclick"
+  ],
   "repository": "https://github.com/romulo2/love-pulsar",
   "license": "MIT",
   "engines": {
