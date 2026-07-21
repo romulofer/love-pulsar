@@ -71,7 +71,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: `love.gr` -> `love.graphics`; members after `love.graphics.`; each suggestion has type+signature+description.
 - **Verify**: `bun test test/autocomplete.test.ts`.
 
-### T3 Hover docs
+### T3 Hover docs [DONE]
 - `src/hover/provider.ts` builds tooltip (signature, params, returns, description) from dataset.
 - **Acceptance**: hover `love.graphics.draw` shows signature+params+description; unknown symbol -> no tooltip, no error.
 - **Verify**: `bun test test/hover.test.ts`.
