@@ -60,7 +60,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: `bun test` green; build emits `dist/`; package loads in Pulsar.
 - **Verify**: `bun run build && bun test`; manual load in Pulsar dev mode.
 
-### T1 API dataset
+### T1 API dataset [DONE]
 - Seed `data/love-api.json` (modules/functions/callbacks/enums with signature, params, returns, description).
 - `src/api/types.ts` shared types; `src/api/dataset.ts` load + query (lookup by path, prefix search).
 - **Acceptance**: dataset loads; `query('love.gr')` returns `love.graphics`; member lookup works; no runtime network.

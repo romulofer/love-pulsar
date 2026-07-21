@@ -1,0 +1,123 @@
+[
+  {
+    "path": "love",
+    "name": "love",
+    "kind": "module",
+    "description": "The root LOVE namespace. All modules, functions, and callbacks live under love.",
+    "url": "https://love2d.org/wiki/love"
+  },
+  {
+    "path": "love.graphics",
+    "name": "graphics",
+    "kind": "module",
+    "description": "The graphics module draws shapes, images, and text to the screen.",
+    "url": "https://love2d.org/wiki/love.graphics"
+  },
+  {
+    "path": "love.graphics.draw",
+    "name": "draw",
+    "kind": "function",
+    "signature": "love.graphics.draw(drawable, x, y, r, sx, sy)",
+    "params": [
+      { "name": "drawable", "type": "Drawable", "description": "A drawable object (Image, Canvas, etc.)." },
+      { "name": "x", "type": "number", "description": "The x position to draw at." },
+      { "name": "y", "type": "number", "description": "The y position to draw at." },
+      { "name": "r", "type": "number", "description": "Orientation in radians." },
+      { "name": "sx", "type": "number", "description": "Scale factor on the x axis." },
+      { "name": "sy", "type": "number", "description": "Scale factor on the y axis." }
+    ],
+    "returns": [],
+    "description": "Draws a Drawable object on the screen with optional transform.",
+    "url": "https://love2d.org/wiki/love.graphics.draw"
+  },
+  {
+    "path": "love.graphics.print",
+    "name": "print",
+    "kind": "function",
+    "signature": "love.graphics.print(text, x, y)",
+    "params": [
+      { "name": "text", "type": "string", "description": "The text to draw." },
+      { "name": "x", "type": "number", "description": "The x position." },
+      { "name": "y", "type": "number", "description": "The y position." }
+    ],
+    "returns": [],
+    "description": "Draws text on the screen.",
+    "url": "https://love2d.org/wiki/love.graphics.print"
+  },
+  {
+    "path": "love.graphics.rectangle",
+    "name": "rectangle",
+    "kind": "function",
+    "signature": "love.graphics.rectangle(mode, x, y, width, height)",
+    "params": [
+      { "name": "mode", "type": "DrawMode", "description": "How to draw the rectangle: 'fill' or 'line'." },
+      { "name": "x", "type": "number", "description": "The x position of the top-left corner." },
+      { "name": "y", "type": "number", "description": "The y position of the top-left corner." },
+      { "name": "width", "type": "number", "description": "Width of the rectangle." },
+      { "name": "height", "type": "number", "description": "Height of the rectangle." }
+    ],
+    "returns": [],
+    "description": "Draws a rectangle.",
+    "url": "https://love2d.org/wiki/love.graphics.rectangle"
+  },
+  {
+    "path": "love.audio",
+    "name": "audio",
+    "kind": "module",
+    "description": "The audio module plays and manages sound sources.",
+    "url": "https://love2d.org/wiki/love.audio"
+  },
+  {
+    "path": "love.audio.play",
+    "name": "play",
+    "kind": "function",
+    "signature": "love.audio.play(source)",
+    "params": [
+      { "name": "source", "type": "Source", "description": "The Source to play." }
+    ],
+    "returns": [],
+    "description": "Plays the specified audio Source.",
+    "url": "https://love2d.org/wiki/love.audio.play"
+  },
+  {
+    "path": "love.load",
+    "name": "load",
+    "kind": "callback",
+    "signature": "love.load(arg, unfilteredArg)",
+    "params": [
+      { "name": "arg", "type": "table", "description": "Command line arguments given to the game." }
+    ],
+    "returns": [],
+    "description": "Called exactly once at the beginning of the game.",
+    "url": "https://love2d.org/wiki/love.load"
+  },
+  {
+    "path": "love.update",
+    "name": "update",
+    "kind": "callback",
+    "signature": "love.update(dt)",
+    "params": [
+      { "name": "dt", "type": "number", "description": "Time since the last update in seconds." }
+    ],
+    "returns": [],
+    "description": "Called every frame to update game state.",
+    "url": "https://love2d.org/wiki/love.update"
+  },
+  {
+    "path": "love.draw",
+    "name": "draw",
+    "kind": "callback",
+    "signature": "love.draw()",
+    "params": [],
+    "returns": [],
+    "description": "Called every frame to render the game.",
+    "url": "https://love2d.org/wiki/love.draw"
+  },
+  {
+    "path": "love.graphics.DrawMode",
+    "name": "DrawMode",
+    "kind": "enum",
+    "description": "How a shape is drawn: 'fill' fills the interior, 'line' draws only the outline.",
+    "url": "https://love2d.org/wiki/DrawMode"
+  }
+]
