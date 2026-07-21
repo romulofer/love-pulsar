@@ -66,7 +66,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: dataset loads; `query('love.gr')` returns `love.graphics`; member lookup works; no runtime network.
 - **Verify**: `bun test test/api-dataset.test.ts`.
 
-### T2 Autocomplete
+### T2 Autocomplete [DONE]
 - `src/autocomplete/provider.ts` shapes suggestions (type, signature snippet, description) from dataset via host adapter.
 - **Acceptance**: `love.gr` -> `love.graphics`; members after `love.graphics.`; each suggestion has type+signature+description.
 - **Verify**: `bun test test/autocomplete.test.ts`.
