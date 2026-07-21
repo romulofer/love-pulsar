@@ -89,7 +89,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: "LOVE: Run" launches project root; console shows live output; error line clickable opens file at line; missing binary -> clear notification.
 - **Verify**: `bun test test/run.test.ts` (error-parse + nearest-main.lua logic); manual launch.
 
-### T6 Config settings
+### T6 Config settings [DONE]
 - `src/config.ts`: settings schema (love binary path, source dirs). Consolidate keys introduced by T4/T5.
 - **Acceptance**: settings appear in Pulsar; binary path respected by runner; source dirs respected by resolver.
 - **Verify**: unit test config defaults; manual settings check.

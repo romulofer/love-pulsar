@@ -4,6 +4,10 @@
 // modules under src/.
 
 import { CompositeDisposable } from "./host/types";
+import { configSchema } from "./config";
+
+// Pulsar reads this exported schema to render the package settings UI.
+export const config = configSchema;
 
 let subscriptions: CompositeDisposable | null = null;
 
