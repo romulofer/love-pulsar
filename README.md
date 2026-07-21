@@ -22,7 +22,14 @@ tested package, the functionality of three Atom-era packages:
   notification, never a crash.
 - **Run LOVE.** Launch the current project (the nearest ancestor containing
   `main.lua`) with the `love` binary, capture output, surface runtime errors as
-  clickable `file:line`, and stop the running instance.
+  clickable `file:line`, and stop the running instance. A status-bar button runs
+  the project with one click.
+- **Diagnostics.** A linter flags `love.*` symbols that are not part of the LOVE
+  API as warnings (squiggles), sourced from the same bundled dataset.
+
+The hover, go-to-definition, and diagnostics features rely on Pulsar's
+`hyperclick`, `atom-ide-datatip`, and `linter` packages; love-pulsar installs
+them automatically on first activation.
 
 ## Install
 

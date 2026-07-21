@@ -3,5 +3,10 @@ node_modules/
 .DS_Store
 FUTURE_FEATURES.md
 
+# Local-only planning and instruction docs, not part of the published package.
+SPEC.md
+CLAUDE.md
+tasks/
+
 # dist/ is intentionally committed: ppm publishes the git tag as-is and does not
 # run a build, and package.json "main" points into dist/.
