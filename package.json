@@ -1,6 +1,6 @@
 {
   "name": "love-pulsar",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Coding tooling for making LOVE (love2d) games inside the Pulsar editor: autocomplete, hover docs, go-to-definition, and run.",
   "keywords": [
     "love2d",
