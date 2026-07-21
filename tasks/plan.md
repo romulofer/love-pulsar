@@ -83,7 +83,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: `require('foo.bar')` opens `foo/bar.lua`; local `function` name jumps to def line; missing target -> notification, no crash.
 - **Verify**: `bun test test/hyperclick.test.ts`.
 
-### T5 Run / debug LOVE
+### T5 Run / debug LOVE [DONE]
 - `src/run/runner.ts`: spawn `love` at nearest ancestor with `main.lua`; configurable binary path + platform defaults; stop command.
 - `src/run/console.ts`: output panel + parse `file:line` from LOVE error output into clickable entries.
 - **Acceptance**: "LOVE: Run" launches project root; console shows live output; error line clickable opens file at line; missing binary -> clear notification.
