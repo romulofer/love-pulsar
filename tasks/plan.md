@@ -52,7 +52,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 
 ## Task Detail
 
-### T0 Scaffold
+### T0 Scaffold [DONE]
 - Create `package.json` (Pulsar manifest fields + npm scripts: `build`, `test`), `tsconfig.json` (strict), build to `dist/`.
 - `src/main.ts` with `activate()`/`deactivate()` wiring stubs + disposables.
 - Define host adapter interface(s) so pure logic never imports Pulsar directly.
