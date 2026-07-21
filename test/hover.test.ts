@@ -30,7 +30,8 @@ describe("renderHoverMarkdown", () => {
 
   it("never emits an em dash", () => {
     const doc = buildHover(ds, "love.graphics.draw")!;
-    expect(renderHoverMarkdown(doc)).not.toContain("—");
+    const emDash = String.fromCharCode(0x2014);
+    expect(renderHoverMarkdown(doc)).not.toContain(emDash);
   });
 
   it("renders a module with no params without error", () => {

@@ -15,10 +15,28 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test"
   },
-  "providedServices": {},
-  "consumedServices": {},
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "4.0.0": "provideAutocomplete"
+      }
+    },
+    "hyperclick": {
+      "versions": {
+        "0.1.0": "provideHyperclick"
+      }
+    }
+  },
+  "consumedServices": {
+    "datatip": {
+      "versions": {
+        "0.1.0": "consumeDatatipService"
+      }
+    }
+  },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/node": "^26.1.1",
     "typescript": "^5.5.0"
   }
 }

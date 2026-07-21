@@ -94,7 +94,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: settings appear in Pulsar; binary path respected by runner; source dirs respected by resolver.
 - **Verify**: unit test config defaults; manual settings check.
 
-### T7 Package polish + README
+### T7 Package polish + README [DONE]
 - README (install, features, settings, dev). Map every section-2 acceptance criterion to a test.
 - **Acceptance**: full `bun test` green; each acceptance criterion has >=1 test; package installable.
 - **Verify**: `bun run build && bun test`; fresh Pulsar install smoke.
