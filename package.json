@@ -20,7 +20,9 @@
   "main": "./dist/main.js",
   "package-deps": [
     "hyperclick",
-    "atom-ide-datatip"
+    "atom-ide-datatip",
+    "linter",
+    "linter-ui-default"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -37,12 +39,22 @@
       "versions": {
         "0.1.0": "provideHyperclick"
       }
+    },
+    "linter": {
+      "versions": {
+        "2.0.0": "provideLinter"
+      }
     }
   },
   "consumedServices": {
     "datatip": {
       "versions": {
         "0.1.0": "consumeDatatipService"
+      }
+    },
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
       }
     }
   },

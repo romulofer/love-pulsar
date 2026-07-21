@@ -12,6 +12,8 @@ exports.deactivate = deactivate;
 exports.provideAutocomplete = provideAutocomplete;
 exports.provideHyperclick = provideHyperclick;
 exports.consumeDatatipService = consumeDatatipService;
+exports.provideLinter = provideLinter;
+exports.consumeStatusBar = consumeStatusBar;
 const child_process_1 = require("child_process");
 const types_1 = require("./host/types");
 const config_1 = require("./config");
@@ -22,6 +24,7 @@ const runner_1 = require("./run/runner");
 const resolve_1 = require("./hyperclick/resolve");
 const provider_2 = require("./hyperclick/provider");
 const console_1 = require("./run/console");
+const provider_3 = require("./lint/provider");
 // Pulsar reads this exported schema to render the package settings UI.
 exports.config = config_1.configSchema;
 const dataset = dataset_1.Dataset.load();
@@ -32,6 +35,7 @@ function activate() {
     const atom = getAtom();
     if (!atom)
         return; // running outside Pulsar (tests, build): nothing to wire
+    installPackageDeps(); // auto-install hyperclick + datatip so those features work
     const notifier = createNotifier(atom);
     const spawnFn = createSpawnFn(atom);
     runner = new runner_1.LoveRunner(spawnFn, notifier);
@@ -109,7 +113,64 @@ function consumeDatatipService(service) {
     subscriptions?.add(disposable);
     return disposable;
 }
+// linter service. Declared in package.json providedServices. Flags unknown
+// love.* symbols as squiggles. Lints on save to avoid noise mid-edit.
+function provideLinter() {
+    return {
+        name: "love-pulsar",
+        grammarScopes: ["source.lua"],
+        scope: "file",
+        lintsOnChange: false,
+        lint(editor) {
+            const file = editor.getPath?.() ?? null;
+            return (0, provider_3.lintSource)(dataset, editor.getText()).map((d) => ({
+                severity: d.severity,
+                location: {
+                    file,
+                    position: [
+                        [d.line - 1, d.column],
+                        [d.line - 1, d.endColumn],
+                    ],
+                },
+                excerpt: d.message,
+            }));
+        },
+    };
+}
+// status-bar service. Declared in package.json consumedServices. Adds a
+// clickable "Run" button that dispatches the love-pulsar:run command.
+function consumeStatusBar(statusBar) {
+    const atom = getAtom();
+    const doc = globalThis.document;
+    if (!atom || !doc)
+        return;
+    const button = doc.createElement("a");
+    button.classList.add("love-pulsar-run", "inline-block");
+    button.textContent = "▶ LOVE";
+    button.title = "Run LOVE project (F5)";
+    const onClick = () => atom.commands.dispatch(atom.views.getView(atom.workspace), "love-pulsar:run");
+    button.addEventListener("click", onClick);
+    const tile = statusBar.addLeftTile({ item: button, priority: 100 });
+    subscriptions?.add({
+        dispose: () => {
+            button.removeEventListener("click", onClick);
+            tile.destroy();
+        },
+    });
+}
 // --- Host glue (only reached inside Pulsar) ---
+// Auto-installs the packages that provide/consume the hyperclick and datatip
+// services, without which Ctrl-click and hover never fire. Best-effort: if
+// atom-package-deps is unavailable the providers still register.
+function installPackageDeps() {
+    try {
+        const deps = require("atom-package-deps");
+        void deps.install("love-pulsar");
+    }
+    catch {
+        // atom-package-deps missing: skip auto-install, features degrade gracefully
+    }
+}
 function getAtom() {
     return globalThis.atom ?? null;
 }
