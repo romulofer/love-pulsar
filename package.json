@@ -18,6 +18,10 @@
     "pulsar": ">=1.100.0"
   },
   "main": "./dist/main.js",
+  "package-deps": [
+    "hyperclick",
+    "atom-ide-datatip"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -41,6 +45,9 @@
         "0.1.0": "consumeDatatipService"
       }
     }
+  },
+  "dependencies": {
+    "atom-package-deps": "^8.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
