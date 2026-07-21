@@ -76,7 +76,7 @@ Parallelizable after T1: {T2, T3} and independently {T4}, {T5}. T6 config keys l
 - **Acceptance**: hover `love.graphics.draw` shows signature+params+description; unknown symbol -> no tooltip, no error.
 - **Verify**: `bun test test/hover.test.ts`.
 
-### T4 Hyperclick / go-to-def
+### T4 Hyperclick / go-to-def [DONE]
 - `src/hyperclick/resolve.ts`: resolve `require('a.b')` -> `a/b.lua` under project root / configured source dirs; resolve local function/var defs.
 - `src/hyperclick/provider.ts`: host wiring; LOVE API symbols link to hover/reference.
 - Fixture LOVE project under `test/fixtures/`.
