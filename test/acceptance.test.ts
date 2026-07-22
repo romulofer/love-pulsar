@@ -51,6 +51,7 @@ describe("2.2 Hyperclick", () => {
     const calls: string[] = [];
     const host: NavigationHost = {
       openFile: () => {},
+      openFileAt: () => {},
       moveCursor: () => {},
       showApiReference: () => {},
       notifier: { info: () => {}, warn: (m) => calls.push(m), error: () => {} },

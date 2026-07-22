@@ -218,6 +218,11 @@ function handleOutput(atom, text) {
 function navigationHost(atom, notifier) {
     return {
         openFile: (path) => atom.workspace.open(path),
+        openFileAt: (path, line, column) => {
+            Promise.resolve(atom.workspace.open(path)).then((editor) => {
+                editor?.setCursorBufferPosition([line - 1, column - 1]);
+            });
+        },
         moveCursor: (line, column) => {
             const editor = atom.workspace.getActiveTextEditor();
             editor?.setCursorBufferPosition([line - 1, column - 1]);

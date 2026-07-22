@@ -13,6 +13,7 @@ function fakeHost() {
   const calls: string[] = [];
   const host: NavigationHost = {
     openFile: (p) => calls.push(`open:${p}`),
+    openFileAt: (p, l, c) => calls.push(`openAt:${p}:${l}:${c}`),
     moveCursor: (l, c) => calls.push(`move:${l}:${c}`),
     showApiReference: (p) => calls.push(`api:${p}`),
     notifier: {
@@ -103,6 +104,23 @@ describe("resolveClick", () => {
     if (r.kind === "definition") expect(r.line).toBe(9);
   });
 
+  it("resolves a Module.member click to the definition in the required file", () => {
+    const r = resolveClick({
+      lineText: "  player.spawn()",
+      word: "spawn",
+      dottedPath: "player.spawn",
+      source: mainSource,
+      roots: [GAME_ROOT],
+      isApiPath,
+    });
+    expect(r.kind).toBe("definition");
+    if (r.kind === "definition") {
+      expect(r.path).toBe(join(GAME_ROOT, "player.lua"));
+      // "function player.spawn()" is on line 3 of player.lua
+      expect(r.line).toBe(3);
+    }
+  });
+
   it("reports missing when nothing resolves", () => {
     const r = resolveClick({
       lineText: "  wat()",
@@ -122,10 +140,16 @@ describe("performResolution", () => {
     expect(calls).toEqual(["open:/x/foo.lua"]);
   });
 
-  it("moves the cursor for a definition resolution", () => {
+  it("moves the cursor for a same-file definition resolution", () => {
     const { host, calls } = fakeHost();
     performResolution({ kind: "definition", line: 9, column: 16 }, host);
     expect(calls).toEqual(["move:9:16"]);
+  });
+
+  it("opens the file and moves the cursor for a cross-file definition resolution", () => {
+    const { host, calls } = fakeHost();
+    performResolution({ kind: "definition", path: "/x/player.lua", line: 3, column: 12 }, host);
+    expect(calls).toEqual(["openAt:/x/player.lua:3:12"]);
   });
 
   it("shows the api reference for an api resolution", () => {

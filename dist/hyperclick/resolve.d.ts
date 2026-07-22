@@ -7,6 +7,7 @@ export type Resolution = {
     path: string;
 } | {
     kind: "definition";
+    path?: string;
     line: number;
     column: number;
 } | {

@@ -8,6 +8,7 @@ import type { Notifier } from "../host/types";
 
 export interface NavigationHost {
   openFile(path: string): void;
+  openFileAt(path: string, line: number, column: number): void;
   moveCursor(line: number, column: number): void;
   showApiReference(path: string): void;
   notifier: Notifier;
@@ -19,7 +20,11 @@ export function performResolution(resolution: Resolution, host: NavigationHost):
       host.openFile(resolution.path);
       return;
     case "definition":
-      host.moveCursor(resolution.line, resolution.column);
+      if (resolution.path) {
+        host.openFileAt(resolution.path, resolution.line, resolution.column);
+      } else {
+        host.moveCursor(resolution.line, resolution.column);
+      }
       return;
     case "api":
       host.showApiReference(resolution.path);

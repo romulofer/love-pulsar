@@ -4,7 +4,7 @@
 // turns a Resolution into an editor action (open file, move cursor, show hover)
 // or a notification when nothing resolves.
 
-import { existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 
 export interface Definition {
@@ -14,7 +14,7 @@ export interface Definition {
 
 export type Resolution =
   | { kind: "file"; path: string }
-  | { kind: "definition"; line: number; column: number }
+  | { kind: "definition"; path?: string; line: number; column: number }
   | { kind: "api"; path: string }
   | { kind: "missing" };
 
@@ -56,9 +56,47 @@ export function resolveLocalDefinition(source: string, name: string): Definition
   return null;
 }
 
-// Orchestrates a click: require file first, then LOVE API symbol, then local
-// definition, otherwise missing. isApiPath is injected so this stays decoupled
-// from the dataset.
+// Finds the module a local name was bound to via `local name = require(...)`,
+// so a click on `Module.member` can be traced back to the file it came from.
+function findLocalRequireBinding(source: string, name: string): string | null {
+  const escaped = escapeRegExp(name);
+  const pattern = new RegExp(`^\\s*local\\s+${escaped}\\s*=\\s*require\\s*\\(?\\s*["']([^"']+)["']`);
+  for (const line of source.split(/\r?\n/)) {
+    const match = pattern.exec(line);
+    if (match) return match[1] as string;
+  }
+  return null;
+}
+
+// Resolves a click on `Module.member`: traces `Module` back to the file it was
+// required from, then looks for `member`'s definition in that file.
+function resolveMemberDefinition(input: {
+  dottedPath: string;
+  word: string;
+  source: string;
+  roots: string[];
+}): Resolution | null {
+  const lastDot = input.dottedPath.lastIndexOf(".");
+  if (lastDot === -1) return null;
+
+  const prefix = input.dottedPath.slice(0, lastDot);
+  const member = input.dottedPath.slice(lastDot + 1);
+  if (member !== input.word || prefix.includes(".")) return null;
+
+  const moduleName = findLocalRequireBinding(input.source, prefix);
+  if (!moduleName) return null;
+
+  const path = resolveRequire(moduleName, input.roots);
+  if (!path) return null;
+
+  const def = resolveLocalDefinition(readFileSync(path, "utf8"), member);
+  return def ? { kind: "definition", path, line: def.line, column: def.column } : null;
+}
+
+// Orchestrates a click: require file first, then LOVE API symbol, then a
+// cross-file member (Module.member), then a same-file local definition,
+// otherwise missing. isApiPath is injected so this stays decoupled from the
+// dataset.
 export function resolveClick(input: {
   lineText: string;
   word: string;
@@ -75,6 +113,16 @@ export function resolveClick(input: {
 
   if (input.dottedPath && input.isApiPath(input.dottedPath)) {
     return { kind: "api", path: input.dottedPath };
+  }
+
+  if (input.dottedPath) {
+    const memberDef = resolveMemberDefinition({
+      dottedPath: input.dottedPath,
+      word: input.word,
+      source: input.source,
+      roots: input.roots,
+    });
+    if (memberDef) return memberDef;
   }
 
   const def = resolveLocalDefinition(input.source, input.word);

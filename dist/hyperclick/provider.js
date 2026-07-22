@@ -11,7 +11,12 @@ function performResolution(resolution, host) {
             host.openFile(resolution.path);
             return;
         case "definition":
-            host.moveCursor(resolution.line, resolution.column);
+            if (resolution.path) {
+                host.openFileAt(resolution.path, resolution.line, resolution.column);
+            }
+            else {
+                host.moveCursor(resolution.line, resolution.column);
+            }
             return;
         case "api":
             host.showApiReference(resolution.path);

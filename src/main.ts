@@ -238,6 +238,11 @@ function handleOutput(atom: AtomLike, text: string): void {
 function navigationHost(atom: AtomLike, notifier: Notifier): NavigationHost {
   return {
     openFile: (path) => atom.workspace.open(path),
+    openFileAt: (path, line, column) => {
+      Promise.resolve(atom.workspace.open(path)).then((editor: AtomLike) => {
+        editor?.setCursorBufferPosition([line - 1, column - 1]);
+      });
+    },
     moveCursor: (line, column) => {
       const editor = atom.workspace.getActiveTextEditor();
       editor?.setCursorBufferPosition([line - 1, column - 1]);
