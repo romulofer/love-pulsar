@@ -89,3 +89,9 @@ lua scripts/build-dataset.lua /tmp/love-api > data/love-api.json
 ## License
 
 MIT
+
+## ☕ Support
+
+If you find this project useful, consider supporting its development:
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-legendaryredfox-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/legendaryredfox)
