@@ -1,0 +1,179 @@
+{
+  ".source.lua": {
+    "love.directorydropped": {
+      "prefix": "love_directorydropped",
+      "body": "function love.directorydropped(${1:path})\n\t$0\nend",
+      "description": "Callback function triggered when a directory is dragged and dropped onto the window."
+    },
+    "love.displayrotated": {
+      "prefix": "love_displayrotated",
+      "body": "function love.displayrotated(${1:index}, ${2:orientation})\n\t$0\nend",
+      "description": "Called when the device display orientation changed, for example, user rotated their phone 180 degrees."
+    },
+    "love.draw": {
+      "prefix": "love_draw",
+      "body": "function love.draw()\n\t$0\nend",
+      "description": "Callback function used to draw on the screen every frame."
+    },
+    "love.filedropped": {
+      "prefix": "love_filedropped",
+      "body": "function love.filedropped(${1:file})\n\t$0\nend",
+      "description": "Callback function triggered when a file is dragged and dropped onto the window."
+    },
+    "love.focus": {
+      "prefix": "love_focus",
+      "body": "function love.focus(${1:focus})\n\t$0\nend",
+      "description": "Callback function triggered when window receives or loses focus."
+    },
+    "love.gamepadaxis": {
+      "prefix": "love_gamepadaxis",
+      "body": "function love.gamepadaxis(${1:joystick}, ${2:axis}, ${3:value})\n\t$0\nend",
+      "description": "Called when a Joystick's virtual gamepad axis is moved."
+    },
+    "love.gamepadpressed": {
+      "prefix": "love_gamepadpressed",
+      "body": "function love.gamepadpressed(${1:joystick}, ${2:button})\n\t$0\nend",
+      "description": "Called when a Joystick's virtual gamepad button is pressed."
+    },
+    "love.gamepadreleased": {
+      "prefix": "love_gamepadreleased",
+      "body": "function love.gamepadreleased(${1:joystick}, ${2:button})\n\t$0\nend",
+      "description": "Called when a Joystick's virtual gamepad button is released."
+    },
+    "love.joystickadded": {
+      "prefix": "love_joystickadded",
+      "body": "function love.joystickadded(${1:joystick})\n\t$0\nend",
+      "description": "Called when a Joystick is connected."
+    },
+    "love.joystickaxis": {
+      "prefix": "love_joystickaxis",
+      "body": "function love.joystickaxis(${1:joystick}, ${2:axis}, ${3:value})\n\t$0\nend",
+      "description": "Called when a joystick axis moves."
+    },
+    "love.joystickhat": {
+      "prefix": "love_joystickhat",
+      "body": "function love.joystickhat(${1:joystick}, ${2:hat}, ${3:direction})\n\t$0\nend",
+      "description": "Called when a joystick hat direction changes."
+    },
+    "love.joystickpressed": {
+      "prefix": "love_joystickpressed",
+      "body": "function love.joystickpressed(${1:joystick}, ${2:button})\n\t$0\nend",
+      "description": "Called when a joystick button is pressed."
+    },
+    "love.joystickreleased": {
+      "prefix": "love_joystickreleased",
+      "body": "function love.joystickreleased(${1:joystick}, ${2:button})\n\t$0\nend",
+      "description": "Called when a joystick button is released."
+    },
+    "love.joystickremoved": {
+      "prefix": "love_joystickremoved",
+      "body": "function love.joystickremoved(${1:joystick})\n\t$0\nend",
+      "description": "Called when a Joystick is disconnected."
+    },
+    "love.keypressed": {
+      "prefix": "love_keypressed",
+      "body": "function love.keypressed(${1:key}, ${2:scancode}, ${3:isrepeat})\n\t$0\nend",
+      "description": "Callback function triggered when a key is pressed."
+    },
+    "love.keyreleased": {
+      "prefix": "love_keyreleased",
+      "body": "function love.keyreleased(${1:key}, ${2:scancode})\n\t$0\nend",
+      "description": "Callback function triggered when a keyboard key is released."
+    },
+    "love.load": {
+      "prefix": "love_load",
+      "body": "function love.load(${1:arg}, ${2:unfilteredArg})\n\t$0\nend",
+      "description": "This function is called exactly once at the beginning of the game."
+    },
+    "love.lowmemory": {
+      "prefix": "love_lowmemory",
+      "body": "function love.lowmemory()\n\t$0\nend",
+      "description": "Callback function triggered when the system is running out of memory on mobile devices."
+    },
+    "love.mousefocus": {
+      "prefix": "love_mousefocus",
+      "body": "function love.mousefocus(${1:focus})\n\t$0\nend",
+      "description": "Callback function triggered when window receives or loses mouse focus."
+    },
+    "love.mousemoved": {
+      "prefix": "love_mousemoved",
+      "body": "function love.mousemoved(${1:x}, ${2:y}, ${3:dx}, ${4:dy}, ${5:istouch})\n\t$0\nend",
+      "description": "Callback function triggered when the mouse is moved."
+    },
+    "love.mousepressed": {
+      "prefix": "love_mousepressed",
+      "body": "function love.mousepressed(${1:x}, ${2:y}, ${3:button}, ${4:istouch}, ${5:presses})\n\t$0\nend",
+      "description": "Callback function triggered when a mouse button is pressed."
+    },
+    "love.mousereleased": {
+      "prefix": "love_mousereleased",
+      "body": "function love.mousereleased(${1:x}, ${2:y}, ${3:button}, ${4:istouch}, ${5:presses})\n\t$0\nend",
+      "description": "Callback function triggered when a mouse button is released."
+    },
+    "love.quit": {
+      "prefix": "love_quit",
+      "body": "function love.quit()\n\t$0\nend",
+      "description": "Callback function triggered when the game is closed."
+    },
+    "love.resize": {
+      "prefix": "love_resize",
+      "body": "function love.resize(${1:w}, ${2:h})\n\t$0\nend",
+      "description": "Called when the window is resized, for example if the user resizes the window, or if love.window.setMode is called with an unsupported width or height in fullscreen and the window chooses the closest appropriate size."
+    },
+    "love.textedited": {
+      "prefix": "love_textedited",
+      "body": "function love.textedited(${1:text}, ${2:start}, ${3:length})\n\t$0\nend",
+      "description": "Called when the candidate text for an IME (Input Method Editor) has changed."
+    },
+    "love.textinput": {
+      "prefix": "love_textinput",
+      "body": "function love.textinput(${1:text})\n\t$0\nend",
+      "description": "Called when text has been entered by the user. For example if shift-2 is pressed on an American keyboard layout, the text '@' will be generated."
+    },
+    "love.threaderror": {
+      "prefix": "love_threaderror",
+      "body": "function love.threaderror(${1:thread}, ${2:errorstr})\n\t$0\nend",
+      "description": "Callback function triggered when a Thread encounters an error."
+    },
+    "love.touchmoved": {
+      "prefix": "love_touchmoved",
+      "body": "function love.touchmoved(${1:id}, ${2:x}, ${3:y}, ${4:dx}, ${5:dy}, ${6:pressure})\n\t$0\nend",
+      "description": "Callback function triggered when a touch press moves inside the touch screen."
+    },
+    "love.touchpressed": {
+      "prefix": "love_touchpressed",
+      "body": "function love.touchpressed(${1:id}, ${2:x}, ${3:y}, ${4:dx}, ${5:dy}, ${6:pressure})\n\t$0\nend",
+      "description": "Callback function triggered when the touch screen is touched."
+    },
+    "love.touchreleased": {
+      "prefix": "love_touchreleased",
+      "body": "function love.touchreleased(${1:id}, ${2:x}, ${3:y}, ${4:dx}, ${5:dy}, ${6:pressure})\n\t$0\nend",
+      "description": "Callback function triggered when the touch screen stops being touched."
+    },
+    "love.update": {
+      "prefix": "love_update",
+      "body": "function love.update(${1:dt})\n\t$0\nend",
+      "description": "Callback function used to update the state of the game every frame."
+    },
+    "love.visible": {
+      "prefix": "love_visible",
+      "body": "function love.visible(${1:visible})\n\t$0\nend",
+      "description": "Callback function triggered when window is minimized/hidden or unminimized by the user."
+    },
+    "love.wheelmoved": {
+      "prefix": "love_wheelmoved",
+      "body": "function love.wheelmoved(${1:x}, ${2:y})\n\t$0\nend",
+      "description": "Callback function triggered when the mouse wheel is moved."
+    },
+    "love.conf": {
+      "prefix": "love_conf",
+      "body": "function love.conf(${1:t})\n\t${1:t}.window.title = \"${2:Untitled}\"\n\t${1:t}.window.width = ${3:800}\n\t${1:t}.window.height = ${4:600}\n\t$0\nend",
+      "description": "Configuration callback, run before the modules load. Goes in conf.lua."
+    },
+    "love: minimal main.lua": {
+      "prefix": "love_main",
+      "body": "function love.load()\n\t$1\nend\n\nfunction love.update(dt)\n\t$2\nend\n\nfunction love.draw()\n\t$0\nend",
+      "description": "The three callbacks most games start from."
+    }
+  }
+}

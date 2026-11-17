@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findRequireTarget = findRequireTarget;
 exports.resolveRequire = resolveRequire;
 exports.resolveLocalDefinition = resolveLocalDefinition;
+exports.findLocalRequireBinding = findLocalRequireBinding;
 exports.resolveClick = resolveClick;
 const fs_1 = require("fs");
 const path_1 = require("path");

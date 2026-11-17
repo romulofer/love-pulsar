@@ -6,5 +6,11 @@ export interface AutocompleteItem {
     rightLabel: string;
     description: string;
 }
-export declare function suggestionsForLine(dataset: Dataset, lineBeforeCursor: string): AutocompleteItem[];
+export interface ProjectContext {
+    source: string;
+    roots: string[];
+    cursorLine?: number;
+    projectRoot?: string;
+}
+export declare function suggestionsForLine(dataset: Dataset, lineBeforeCursor: string, project?: ProjectContext): AutocompleteItem[];
 export declare function hoverMarkdownForSymbol(dataset: Dataset, path: string): string | null;

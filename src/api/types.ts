@@ -30,3 +30,12 @@ export interface ApiEntry {
   // Optional deep-link to the online reference (used by hover for API symbols).
   url?: string;
 }
+
+// A symbol that still works in the running LOVE but is slated for removal. The
+// LOVE API description omits these, so they are tracked in data/deprecated.json.
+export interface Deprecation {
+  // LOVE version that deprecated the symbol, e.g. "11.0".
+  since: string;
+  // Fully-qualified path of the symbol to use instead.
+  replacement?: string;
+}

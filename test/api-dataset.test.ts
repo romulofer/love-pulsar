@@ -1,4 +1,6 @@
 import { describe, it, expect } from "bun:test";
+import { readFileSync } from "fs";
+import { join } from "path";
 import { Dataset } from "../src/api/dataset";
 
 describe("Dataset.load", () => {
@@ -53,5 +55,29 @@ describe("Dataset.membersOf", () => {
     // direct child only: love.graphics.draw is a grandchild, must be excluded
     expect(paths).not.toContain("love.graphics.draw");
     expect(paths).not.toContain("love");
+  });
+});
+
+describe("Dataset.deprecation", () => {
+  const ds = Dataset.load();
+
+  it("knows deprecated symbols that the API description omits", () => {
+    expect(ds.lookup("love.filesystem.exists")).toBeUndefined();
+    expect(ds.deprecation("love.filesystem.exists")).toEqual({
+      since: "11.0",
+      replacement: "love.filesystem.getInfo",
+    });
+  });
+
+  it("returns undefined for current symbols", () => {
+    expect(ds.deprecation("love.filesystem.getInfo")).toBeUndefined();
+  });
+
+  it("points every replacement at a real API symbol", () => {
+    const file = join(__dirname, "..", "data", "deprecated.json");
+    for (const path of Object.keys(JSON.parse(readFileSync(file, "utf8")))) {
+      const replacement = ds.deprecation(path)?.replacement;
+      if (replacement) expect(ds.lookup(replacement)).toBeDefined();
+    }
   });
 });

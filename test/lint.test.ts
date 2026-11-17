@@ -47,4 +47,16 @@ describe("lintSource", () => {
     ].join("\n");
     expect(lintSource(ds, src)).toEqual([]);
   });
+
+  it("reports deprecated symbols with their replacement instead of 'unknown'", () => {
+    const diags = lintSource(ds, "if love.filesystem.exists('a') then end\n");
+    expect(diags).toHaveLength(1);
+    expect(diags[0]!.message).toContain("deprecated since LOVE 11.0");
+    expect(diags[0]!.message).toContain("love.filesystem.getInfo");
+    expect(diags[0]!.message).not.toContain("Unknown");
+  });
+
+  it("does not report deprecation for symbols that are fully supported", () => {
+    expect(lintSource(ds, "love.filesystem.getInfo('a')\n")).toEqual([]);
+  });
 });

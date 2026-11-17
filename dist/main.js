@@ -26,6 +26,7 @@ const provider_2 = require("./hyperclick/provider");
 const console_1 = require("./run/console");
 const provider_3 = require("./lint/provider");
 const token_1 = require("./hover/token");
+const version_1 = require("./api/version");
 // Pulsar reads this exported schema to render the package settings UI.
 exports.config = config_1.configSchema;
 const dataset = dataset_1.Dataset.load();
@@ -45,6 +46,7 @@ function activate() {
         "love-pulsar:stop": () => runner?.stop(),
     });
     subscriptions.add(commands);
+    checkLoveVersion(atom, notifier);
 }
 function deactivate() {
     runner?.stop();
@@ -61,7 +63,16 @@ function provideAutocomplete() {
         getSuggestions(request) {
             const { row, column } = request.bufferPosition;
             const line = request.editor.getTextInRange([[row, 0], [row, column]]);
-            return (0, adapters_1.suggestionsForLine)(dataset, line);
+            const atom = getAtom();
+            const project = atom
+                ? {
+                    source: request.editor.getText(),
+                    roots: currentSourceRoots(atom, request.editor),
+                    cursorLine: row + 1,
+                    projectRoot: currentProjectRoot(atom, request.editor),
+                }
+                : undefined;
+            return (0, adapters_1.suggestionsForLine)(dataset, line, project);
         },
     };
 }
@@ -183,6 +194,19 @@ function installPackageDeps() {
         // atom-package-deps missing: skip auto-install, features degrade gracefully
     }
 }
+// Warns once when the installed LOVE differs from the version the bundled API
+// data describes. Best-effort: a missing binary or odd output is ignored.
+function checkLoveVersion(atom, notifier) {
+    const config = (0, config_1.resolveConfig)(readConfig(atom), process.platform);
+    const binary = config.loveBinaryPath || (0, runner_1.defaultLoveBinary)(process.platform);
+    (0, child_process_1.execFile)(binary, ["--version"], { timeout: 5000 }, (error, stdout, stderr) => {
+        if (error)
+            return;
+        const message = (0, version_1.versionMismatchMessage)(`${stdout}\n${stderr}`, dataset.loveVersion);
+        if (message)
+            notifier.warn(message);
+    });
+}
 function getAtom() {
     return globalThis.atom ?? null;
 }
@@ -250,9 +274,12 @@ function runProject(atom, notifier) {
     const config = (0, config_1.resolveConfig)(readConfig(atom), process.platform);
     runner?.run(config.loveBinaryPath || (0, runner_1.defaultLoveBinary)(process.platform), root);
 }
-function currentSourceRoots(atom, editor) {
+function currentProjectRoot(atom, editor) {
     const startDir = editor.getPath?.() ?? atom.project.getPaths()[0];
-    const root = startDir ? (0, runner_1.findProjectRoot)(startDir) ?? atom.project.getPaths()[0] : undefined;
+    return startDir ? (0, runner_1.findProjectRoot)(startDir) ?? atom.project.getPaths()[0] : undefined;
+}
+function currentSourceRoots(atom, editor) {
+    const root = currentProjectRoot(atom, editor);
     if (!root)
         return [];
     return (0, config_1.sourceRoots)((0, config_1.resolveConfig)(readConfig(atom), process.platform), root);

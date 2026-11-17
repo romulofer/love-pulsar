@@ -34,11 +34,20 @@ export function lintSource(dataset: Dataset, source: string): Diagnostic[] {
         column,
         endColumn: column + path.length,
         severity: "warning",
-        message: `Unknown LOVE API symbol '${path}'.`,
+        message: messageFor(dataset, path),
       });
     }
   }
   return diagnostics;
+}
+
+// Deprecated symbols still work in the running LOVE but are missing from the
+// API description, so they get their own message instead of "unknown".
+function messageFor(dataset: Dataset, path: string): string {
+  const deprecation = dataset.deprecation(path);
+  if (!deprecation) return `Unknown LOVE API symbol '${path}'.`;
+  const replacement = deprecation.replacement ? ` Use '${deprecation.replacement}' instead.` : "";
+  return `'${path}' is deprecated since LOVE ${deprecation.since}.${replacement}`;
 }
 
 // A path is known if it is an entry itself or a namespace prefix of one, e.g.

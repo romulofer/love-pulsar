@@ -19,3 +19,7 @@ export interface ApiEntry {
     description?: string;
     url?: string;
 }
+export interface Deprecation {
+    since: string;
+    replacement?: string;
+}

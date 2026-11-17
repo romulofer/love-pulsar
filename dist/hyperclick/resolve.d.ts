@@ -19,6 +19,7 @@ export type Resolution = {
 export declare function findRequireTarget(lineText: string): string | null;
 export declare function resolveRequire(moduleName: string, roots: string[]): string | null;
 export declare function resolveLocalDefinition(source: string, name: string): Definition | null;
+export declare function findLocalRequireBinding(source: string, name: string): string | null;
 export declare function resolveClick(input: {
     lineText: string;
     word: string;

@@ -5,7 +5,7 @@
 // pure core, and the Pulsar/Node APIs are touched only here, behind a guard so
 // the module still loads in a non-editor context (tests, build).
 
-import { spawn } from "child_process";
+import { execFile, spawn } from "child_process";
 import { CompositeDisposable, type Disposable, type Notifier } from "./host/types";
 import { configSchema, resolveConfig, sourceRoots, type RawConfig } from "./config";
 import { Dataset } from "./api/dataset";
@@ -23,6 +23,7 @@ import { performResolution, type NavigationHost } from "./hyperclick/provider";
 import { parseErrorLocations } from "./run/console";
 import { lintSource } from "./lint/provider";
 import { loveSymbolAt } from "./hover/token";
+import { versionMismatchMessage } from "./api/version";
 
 // Pulsar reads this exported schema to render the package settings UI.
 export const config = configSchema;
@@ -54,6 +55,8 @@ export function activate(): void {
     "love-pulsar:stop": () => runner?.stop(),
   });
   subscriptions.add(commands);
+
+  checkLoveVersion(atom, notifier);
 }
 
 export function deactivate(): void {
@@ -72,7 +75,16 @@ export function provideAutocomplete(): unknown {
     getSuggestions(request: { editor: AtomLike; bufferPosition: AtomLike }): unknown[] {
       const { row, column } = request.bufferPosition;
       const line = request.editor.getTextInRange([[row, 0], [row, column]]);
-      return suggestionsForLine(dataset, line);
+      const atom = getAtom();
+      const project = atom
+        ? {
+            source: request.editor.getText() as string,
+            roots: currentSourceRoots(atom, request.editor),
+            cursorLine: row + 1,
+            projectRoot: currentProjectRoot(atom, request.editor),
+          }
+        : undefined;
+      return suggestionsForLine(dataset, line, project);
     },
   };
 }
@@ -199,6 +211,18 @@ function installPackageDeps(): void {
   }
 }
 
+// Warns once when the installed LOVE differs from the version the bundled API
+// data describes. Best-effort: a missing binary or odd output is ignored.
+function checkLoveVersion(atom: AtomLike, notifier: Notifier): void {
+  const config = resolveConfig(readConfig(atom), process.platform);
+  const binary = config.loveBinaryPath || defaultLoveBinary(process.platform);
+  execFile(binary, ["--version"], { timeout: 5000 }, (error, stdout, stderr) => {
+    if (error) return;
+    const message = versionMismatchMessage(`${stdout}\n${stderr}`, dataset.loveVersion);
+    if (message) notifier.warn(message);
+  });
+}
+
 function getAtom(): AtomLike | null {
   return (globalThis as { atom?: AtomLike }).atom ?? null;
 }
@@ -272,9 +296,13 @@ function runProject(atom: AtomLike, notifier: Notifier): void {
   runner?.run(config.loveBinaryPath || defaultLoveBinary(process.platform), root);
 }
 
-function currentSourceRoots(atom: AtomLike, editor: AtomLike): string[] {
+function currentProjectRoot(atom: AtomLike, editor: AtomLike): string | undefined {
   const startDir: string | undefined = editor.getPath?.() ?? atom.project.getPaths()[0];
-  const root = startDir ? findProjectRoot(startDir) ?? atom.project.getPaths()[0] : undefined;
+  return startDir ? findProjectRoot(startDir) ?? atom.project.getPaths()[0] : undefined;
+}
+
+function currentSourceRoots(atom: AtomLike, editor: AtomLike): string[] {
+  const root = currentProjectRoot(atom, editor);
   if (!root) return [];
   return sourceRoots(resolveConfig(readConfig(atom), process.platform), root);
 }

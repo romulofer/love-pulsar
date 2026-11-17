@@ -28,7 +28,20 @@ tested package, the functionality of three Atom-era packages:
   clickable `file:line`, and stop the running instance. A status-bar button runs
   the project with one click.
 - **Diagnostics.** A linter flags `love.*` symbols that are not part of the LOVE
-  API as warnings (squiggles), sourced from the same bundled dataset.
+  API as warnings (squiggles), sourced from the same bundled dataset. Symbols
+  that are deprecated but still work (for example `love.filesystem.exists`) get a
+  "deprecated since" warning that names the replacement instead of "unknown".
+- **Project autocomplete.** Besides `love.*`, completion offers the functions and
+  variables of the current file, the members of a table defined in it
+  (`Enemy.`, `Enemy:`), and the members of a module loaded with
+  `local player = require("player")` (`player.`). Scanning is line-based, so it
+  reads top-level style declarations (`function M.name()`, `M.name = ...`).
+- **Snippets.** Type `love_` for a callback skeleton with the real parameter
+  names (`love_load`, `love_update`, `love_draw`, `love_keypressed`, ...), or
+  `love_main` for a minimal `main.lua`.
+- **Version check.** On activation the package runs `love --version` and warns
+  once if the installed LOVE differs (major.minor) from the version the bundled
+  API data describes.
 
 The hover, go-to-definition, and diagnostics features rely on Pulsar's
 `hyperclick`, `atom-ide-datatip`, and `linter` packages; love-pulsar installs
@@ -80,7 +93,9 @@ live editor. Fixtures for a sample LOVE project live under `test/fixtures/`.
 
 ### Regenerating the API dataset
 
-`data/love-api.json` powers autocomplete, hover, and the linter. It is generated
+`data/love-api.json` powers autocomplete, hover, and the linter. It has the shape
+`{ "loveVersion": "11.5", "entries": [...] }`, where the version is the one the
+source describes. It is generated
 from the [love2d-community/love-api](https://github.com/love2d-community/love-api)
 source:
 
@@ -88,6 +103,11 @@ source:
 git clone --depth 1 https://github.com/love2d-community/love-api /tmp/love-api
 lua scripts/build-dataset.lua /tmp/love-api > data/love-api.json
 ```
+
+`data/deprecated.json` is maintained by hand: it lists symbols that the LOVE API
+description omits but that still work in the running LOVE, with the version that
+deprecated them and their replacement. The LOVE wiki is the reference for
+adding entries.
 
 ## License
 

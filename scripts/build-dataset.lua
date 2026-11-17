@@ -5,7 +5,8 @@
 -- The love-api project describes the full LOVE API as Lua tables. This script
 -- requires it, walks the root functions/callbacks and every module's functions
 -- and enums, and emits our flat ApiEntry[] JSON shape (path, name, kind,
--- signature, params, returns, description, url). Object types and their methods
+-- signature, params, returns, description, url), wrapped with the LOVE version
+-- the source describes. Object types and their methods
 -- are intentionally skipped: they are not accessed as dotted love.* symbols, so
 -- autocomplete, hover, and the linter do not need them.
 
@@ -121,7 +122,11 @@ end
 table.sort(entries, function(a, b) return a.path < b.path end)
 
 -- Emit JSON.
-local buf = { "[" }
+local buf = {
+  "{",
+  "  " .. jsonString("loveVersion") .. ": " .. jsonString(api.version or "unknown") .. ",",
+  "  " .. jsonString("entries") .. ": [",
+}
 local function field(k, v)
   return jsonString(k) .. ": " .. v
 end
@@ -150,5 +155,6 @@ for i, e in ipairs(entries) do
   if e.url then fields[#fields + 1] = field("url", jsonString(e.url)) end
   buf[#buf + 1] = "  {\n    " .. table.concat(fields, ",\n    ") .. "\n  }" .. (i < #entries and "," or "")
 end
-buf[#buf + 1] = "]"
+buf[#buf + 1] = "  ]"
+buf[#buf + 1] = "}"
 io.write(table.concat(buf, "\n"), "\n")

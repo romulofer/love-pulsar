@@ -58,7 +58,7 @@ export function resolveLocalDefinition(source: string, name: string): Definition
 
 // Finds the module a local name was bound to via `local name = require(...)`,
 // so a click on `Module.member` can be traced back to the file it came from.
-function findLocalRequireBinding(source: string, name: string): string | null {
+export function findLocalRequireBinding(source: string, name: string): string | null {
   const escaped = escapeRegExp(name);
   const pattern = new RegExp(`^\\s*local\\s+${escaped}\\s*=\\s*require\\s*\\(?\\s*["']([^"']+)["']`);
   for (const line of source.split(/\r?\n/)) {

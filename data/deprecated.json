@@ -1,0 +1,8 @@
+{
+  "love.filesystem.exists": { "since": "11.0", "replacement": "love.filesystem.getInfo" },
+  "love.filesystem.getLastModified": { "since": "11.0", "replacement": "love.filesystem.getInfo" },
+  "love.filesystem.getSize": { "since": "11.0", "replacement": "love.filesystem.getInfo" },
+  "love.filesystem.isDirectory": { "since": "11.0", "replacement": "love.filesystem.getInfo" },
+  "love.filesystem.isFile": { "since": "11.0", "replacement": "love.filesystem.getInfo" },
+  "love.filesystem.isSymlink": { "since": "11.0", "replacement": "love.filesystem.getInfo" }
+}
